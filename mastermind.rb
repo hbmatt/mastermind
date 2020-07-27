@@ -219,8 +219,8 @@ class Computer
       store_colors(@guess, player.key)
     else
       store_position(@guess, player.key)
-      @guess = @valid_colors.sample(4)
       push_position()
+      push_guess()
     end
 
     puts "The computer guesses #{@guess.join}."
@@ -242,6 +242,7 @@ class Computer
       if guess[i] == key[i]
         @position.push(i)
         @color.push(guess[i])
+        @valid_colors = @valid_colors - @color
       end
       i -= 1
     end
@@ -254,6 +255,17 @@ class Computer
     until i < 0
       @guess[@position[i]] = @color[i]
       i -= 1
+    end
+  end
+
+  def push_guess
+    i = 0
+
+    while i < 4
+      if @position.include?(i) == false
+        @guess[i] = @valid_colors.sample
+      end
+      i += 1
     end
   end
 end
